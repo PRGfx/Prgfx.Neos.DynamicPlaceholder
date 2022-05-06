@@ -1,0 +1,7 @@
+Neos:
+  Neos:
+    Ui:
+      resources:
+        javascript:
+          'Prgfx.Neos.DynamicPlaceholder:Plugin':
+            resource: resource://Prgfx.Neos.DynamicPlaceholder/Public/JavaScript/Plugin.js

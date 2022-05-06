@@ -1,0 +1,15 @@
+{
+    "name": "prgfx/neos-dynamic-placeholder",
+    "type": "neos-package",
+    "description": "Enables setting the Neos inline editor placeholder with ClientEval",
+    "keywords": ["neos", "neoscms", "ckeditor5", "clienteval"],
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "neos/neos-ui": "*"
+    },
+    "extra": {
+        "neos": {
+            "package-key": "Prgfx.Neos.DynamicPlaceholder"
+        }
+    }
+}
