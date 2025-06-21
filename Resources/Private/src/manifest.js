@@ -31,10 +31,11 @@ manifest('Prgfx.Neos.DynamicPlaceholder', {}, (globalRegistry, {store}) => {
     const decoratedConfig = (ckEditorConfiguration, options) => {
         const {editorOptions, propertyDomNode} = options;
         const baseConfig = existingConfig(ckEditorConfiguration, options);
-        const contextPath = propertyDomNode?.getAttribute('data-__neos-node-contextpath');
-        const originalPlaceholder = baseConfig.placeholder;
+        const contextPath = propertyDomNode?.getAttribute('data-__neos-editable-node-contextpath')
+            ?? propertyDomNode?.getAttribute('data-__neos-node-contextpath');
+        const originalPlaceholder = baseConfig.placeholder ?? editorOptions.placeholder;
 
-        if (originalPlaceholder.startsWith('ClientEval:')) {
+        if (originalPlaceholder && originalPlaceholder.startsWith('ClientEval:')) {
             if (contextPath) {
                 const i18nRegistry = globalRegistry.get('i18n');
                 try {

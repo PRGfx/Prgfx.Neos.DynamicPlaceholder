@@ -70,15 +70,14 @@
     const decoratedConfig = (ckEditorConfiguration, options) => {
       const { editorOptions, propertyDomNode } = options;
       const baseConfig = existingConfig(ckEditorConfiguration, options);
-      const contextPath = propertyDomNode?.getAttribute("data-__neos-node-contextpath");
-      const i18nRegistry = globalRegistry.get("i18n");
-      const originalPlaceholder = baseConfig.placeholder;
-      if (originalPlaceholder.startsWith("ClientEval:")) {
+      const contextPath = propertyDomNode?.getAttribute("data-__neos-editable-node-contextpath") ?? propertyDomNode?.getAttribute("data-__neos-node-contextpath");
+      const originalPlaceholder = baseConfig.placeholder ?? editorOptions.placeholder;
+      if (originalPlaceholder && originalPlaceholder.startsWith("ClientEval:")) {
         if (contextPath) {
+          const i18nRegistry = globalRegistry.get("i18n");
           try {
             const node = getNodeByContextPath(contextPath);
             if (node) {
-              console.log("evaluate placeholder", { originalPlaceholder, node, editorOptions });
               let evaluatedPlaceholder = clientEval(originalPlaceholder.substring(11), node, editorOptions).toString();
               evaluatedPlaceholder = stripTags(i18nRegistry.translate(evaluatedPlaceholder));
               if (evaluatedPlaceholder) {
@@ -89,10 +88,10 @@
               }
             }
           } catch (e) {
-            console.warn("Could not evaluate ClientEval placeholder", originalPlaceholder, e);
+            console.warn("[Prgfx.Neos.DynamicPlaceholder] Could not evaluate ClientEval placeholder", originalPlaceholder, e);
           }
         } else {
-          console.warn("Could not find contextPath for ClientEval placeholder", originalPlaceholder);
+          console.warn("[Prgfx.Neos.DynamicPlaceholder] Could not find contextPath for ClientEval placeholder", originalPlaceholder);
         }
       }
       return baseConfig;
